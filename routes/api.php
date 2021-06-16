@@ -24,4 +24,6 @@ Route::group(["middleware" => "api"], function () {
     Route::get('/current_user', function () {
         return Auth::user();
     });
+    Route::post('/register', 'Auth\RegisterController@register');
+
 });
