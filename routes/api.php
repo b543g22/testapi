@@ -18,3 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/users', 'UserController');
+
+Route::group(["middleware" => "api"], function () {
+    Route::post('/login', 'Auth\LoginController@login');
+    Route::get('/current_admin_user', function () {
+        return Auth::user();
+    });
+});
