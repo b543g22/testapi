@@ -13,25 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return 'welcome get' . PHP_EOL;
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });
 
-Route::post('/', function () {
-    return 'welcome post' . PHP_EOL;
+Route::apiResource('/users', 'UserController');
+
+Route::group(["middleware" => "api"], function () {
+    Route::post('/login', 'Auth\LoginController@login');
+    Route::get('/current_user', function () {
+        return Auth::user();
+    });
+    Route::post('/register', 'Auth\RegisterController@register');
+
 });
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Route::apiResource('/users', 'UserController');
-
-// Route::group(["middleware" => "api"], function () {
-//     Route::post('/login', 'Auth\LoginController@login');
-//     Route::get('/current_user', function () {
-//         return Auth::user();
-//     });
-//     Route::post('/register', 'Auth\RegisterController@register');
-
-// });
