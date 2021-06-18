@@ -18,13 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/users', 'UserController');
+Route::group(["middleware" => "guest"], function () {
+    Route::post('register', 'Auth\RegisterController@register');
+    Route::post('login', 'Auth\LoginController@login');
+});
 
-Route::group(["middleware" => "api"], function () {
-    Route::post('/login', 'Auth\LoginController@login');
-    Route::get('/current_user', function () {
-        return Auth::user();
-    });
-    Route::post('/register', 'Auth\RegisterController@register');
-
+Route::group(["middleware" => "auth"], function () {
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 });
